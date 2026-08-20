@@ -1,0 +1,72 @@
+# Builds the site and publishes it to GitHub Pages.
+#
+# Pushing this repository publishes source, not a site: index.html ends with
+# `<script type="module" src="/src/main.tsx">`, which no browser can run, and
+# dist/ is git-ignored on purpose. This workflow is the step that turns one
+# into the other.
+#
+# Repository setting this depends on: Settings -> Pages -> Build and
+# deployment -> Source must be "GitHub Actions". If it is still "Deploy from a
+# branch", this workflow runs green and the branch keeps being served instead,
+# which looks exactly like the deploy silently doing nothing.
+
+name: Deploy to Pages
+
+on:
+  push:
+    branches: [main]
+  # So a deploy can be re-run from the Actions tab without an empty commit.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  # deploy-pages authenticates to Pages with an OIDC token rather than a PAT.
+  id-token: write
+
+# One deploy at a time. Not cancel-in-progress: cancelling a half-finished
+# deploy is how a site ends up serving a partial upload.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Matches the local toolchain. Vite 8 needs 20.19+ regardless.
+          node-version: '24'
+          cache: npm
+
+      # ci, not install: it installs exactly what package-lock.json pins and
+      # fails if the two disagree, rather than quietly resolving something else.
+      - name: Install
+        run: npm ci
+
+      # Runs lint:design, then lint:content, then tsc -b, then the static
+      # render. Actions sets CI=true, which is what puts lint:content into
+      # release mode: unresolved TODO placeholders fail the build here even
+      # though they only warn locally. That gate is deliberate — see
+      # scripts/lint-content.mjs.
+      - name: Build
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
