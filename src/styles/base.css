@@ -1,0 +1,249 @@
+/* =============================================================================
+   BASE — reset, element defaults, layout primitives, type utilities.
+   Every value here is a token reference. No raw values. See tokens.css.
+   ============================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Anchor navigation should glide, but unguarded smooth scroll is itself a
+   motion-sickness trigger. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--t-body-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-body-lh);
+  letter-spacing: var(--t-body-track);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  /* `clip`, not `hidden`. Both stop sideways scrolling, but `hidden` makes the
+     element a scroll container, and that silently kills `position: sticky` for
+     every descendant — including the project visuals that travel with the
+     reader. `clip` has no such side effect. */
+  overflow-x: clip;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+img,
+video {
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+/* -----------------------------------------------------------------------------
+   Layout primitives
+   -------------------------------------------------------------------------- */
+
+.container {
+  width: 100%;
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Body text never runs the full container width. Long lines are the fastest
+   way to make a portfolio unreadable. 680px at 17px Inter is about 72 characters. */
+.prose {
+  max-width: var(--measure);
+}
+
+.section {
+  padding-block: var(--section-y);
+  /* The sticky nav would otherwise land an anchor jump underneath itself.
+     scroll-margin only affects where a scroll settles; padding would move the
+     whole layout. This also satisfies WCAG 2.2 Focus Not Obscured, since
+     keyboard anchor navigation lands the same way. */
+  scroll-margin-top: calc(var(--nav-h) + var(--space-4));
+}
+
+/* The background change is the divider. No rules, no borders between sections. */
+.section--bg {
+  background: var(--bg);
+}
+.section--surface {
+  background: var(--surface);
+}
+
+.stack-6 > * + * {
+  margin-top: var(--space-6);
+}
+.stack-4 > * + * {
+  margin-top: var(--space-4);
+}
+.stack-3 > * + * {
+  margin-top: var(--space-3);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Type utilities — one class per token in tokens.css, and no other way to set
+   type anywhere in the project.
+   -------------------------------------------------------------------------- */
+
+.t-hero {
+  font-family: var(--font-display);
+  font-size: var(--t-hero-size);
+  font-weight: var(--w-medium);
+  line-height: var(--t-hero-lh);
+  letter-spacing: var(--t-hero-track);
+}
+
+.t-section {
+  font-family: var(--font-display);
+  font-size: var(--t-section-size);
+  font-weight: var(--w-medium);
+  line-height: var(--t-section-lh);
+  letter-spacing: var(--t-section-track);
+  text-wrap: balance;
+}
+
+.t-project {
+  font-family: var(--font-display);
+  font-size: var(--t-project-size);
+  font-weight: var(--w-medium);
+  line-height: var(--t-project-lh);
+  letter-spacing: var(--t-project-track);
+  text-wrap: balance;
+}
+
+.t-lead {
+  font-family: var(--font-body);
+  font-size: var(--t-lead-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-lead-lh);
+  letter-spacing: var(--t-lead-track);
+}
+
+.t-body {
+  font-family: var(--font-body);
+  font-size: var(--t-body-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-body-lh);
+  letter-spacing: var(--t-body-track);
+}
+
+.t-body-strong {
+  font-family: var(--font-body);
+  font-size: var(--t-body-size);
+  font-weight: var(--w-medium);
+  line-height: var(--t-body-lh);
+  letter-spacing: var(--t-body-track);
+}
+
+.t-caption {
+  font-family: var(--font-body);
+  font-size: var(--t-caption-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-caption-lh);
+  letter-spacing: var(--t-caption-track);
+}
+
+.t-mono-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-label-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-mono-label-lh);
+  letter-spacing: var(--t-mono-label-track);
+  text-transform: uppercase;
+}
+
+.t-mono-tag {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-tag-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-mono-tag-lh);
+  letter-spacing: var(--t-mono-tag-track);
+}
+
+.t-mono-number {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-number-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-mono-number-lh);
+  letter-spacing: var(--t-mono-number-track);
+  font-variant-numeric: tabular-nums;
+}
+
+.t-fine {
+  font-family: var(--font-body);
+  font-size: var(--t-fine-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-fine-lh);
+  letter-spacing: var(--t-fine-track);
+}
+
+.u-muted {
+  color: var(--muted);
+}
+.u-accent {
+  color: var(--accent);
+}

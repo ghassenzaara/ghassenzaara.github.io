@@ -1,0 +1,160 @@
+/* =============================================================================
+   TOKENS — the only file in this project allowed to define a raw value.
+   Enforced by scripts/lint-design.mjs. See CONTEXT.md section 9.
+   ============================================================================= */
+
+:root {
+  /* --- Colour: 6 palette tokens + 4 derived. There is no eleventh. --------- */
+  --bg: #eff7ff; /* Alice Blue   — page background */
+  --fg: #100b00; /* Pitch Black  — primary text */
+  --muted: #656839; /* Olive Leaf   — secondary text, metadata, tech tags */
+  --accent: #22577a; /* Baltic Blue  — links, active states, project numbers */
+  --surface-inverse: #2e1505; /* Dark Coffee  — one inverted band only */
+  --accent-light: #88a7bc; /* accent lightened, for use on --surface-inverse */
+
+  --surface: #e3eef9; /* bg darkened ~4% — cards, hover states */
+  --border: rgba(16, 11, 0, 0.12); /* fg at 12% — hairlines, dividers */
+  --border-strong: rgba(16, 11, 0, 0.24); /* emphasised dividers */
+  --focus: #22577a; /* 2px ring, 2px offset */
+
+  /* Contrast against --bg, verified: fg 18.2:1, accent 7.2:1, muted 5.4:1.
+     --accent on --surface-inverse is 2.2:1 and unreadable — inside the contact
+     band --accent is remapped to --accent-light (6.8:1). See base.css. */
+
+  /* --- Type families ------------------------------------------------------
+     PolySans sets everything it can. Switzer picks up every character
+     PolySans does not have — its trial cmap covers only space, comma, full
+     stop through colon, A-Z and a-z, so every hyphen, apostrophe, bracket and
+     middle dot on this site is Switzer.
+
+     The handover is declared by `unicode-range` in fonts.css, so it happens
+     per character and is decided at parse time rather than discovered.
+
+     The mono role falls back to a real monospace rather than to Switzer: a
+     proportional face filling in for two characters inside a monospaced label
+     breaks its rhythm far more visibly than a slightly different grotesque
+     does inside a paragraph. */
+  --font-display: 'PolySans', 'Switzer', var(--font-sans-fallback);
+  --font-body: 'PolySans', 'Switzer', var(--font-sans-fallback);
+  --font-mono: 'PolySans Mono', 'Geist Mono Variable', 'Geist Mono',
+    var(--font-mono-fallback);
+
+  /* Metric-matched fallbacks (generated into font-fallbacks.css from the woff2
+     files themselves) keep the swap from shifting layout. Without them,
+     families arriving at different moments is a CLS source that
+     font-display: swap alone does not fix. */
+  --font-sans-fallback: 'Switzer Fallback', system-ui, sans-serif;
+  --font-mono-fallback: 'Geist Mono Fallback', ui-monospace, monospace;
+
+  /* --- Type scale. The weight ladder is 400 / 500. Nothing else exists. ---- */
+  --t-hero-size: 104px;
+  --t-hero-lh: 1.05;
+  --t-hero-track: -0.03em;
+
+  --t-section-size: 60px;
+  --t-section-lh: 1.15;
+  --t-section-track: -0.02em;
+
+  --t-project-size: 34px;
+  --t-project-lh: 1.2;
+  --t-project-track: -0.02em;
+
+  --t-lead-size: 24px;
+  --t-lead-lh: 1.5;
+  --t-lead-track: -0.01em;
+
+  --t-body-size: 19px;
+  --t-body-lh: 1.6;
+  --t-body-track: -0.01em;
+
+  --t-caption-size: 15px;
+  --t-caption-lh: 1.5;
+  --t-caption-track: 0;
+
+  --t-mono-label-size: 13px;
+  --t-mono-label-lh: 1;
+  --t-mono-label-track: 0.08em;
+
+  --t-mono-tag-size: 13px;
+  --t-mono-tag-lh: 1;
+  --t-mono-tag-track: 0.04em;
+
+  --t-mono-number-size: 15px;
+  --t-mono-number-lh: 1;
+  --t-mono-number-track: 0.04em;
+
+  --t-fine-size: 13px;
+  --t-fine-lh: 1.5;
+  --t-fine-track: 0;
+
+  /* The ladder was 400/500 only. It now runs 300 to 700, because the display
+     sizes above are large enough that a single mid weight reads flat, and
+     contrast between a light hero and a bulky label is doing work that size
+     alone cannot. Still a closed set: these five and nothing between. */
+  --w-light: 300;
+  --w-regular: 400;
+  --w-medium: 500;
+  --w-semi: 600;
+  --w-bold: 700;
+
+  /* --- Spacing. Base unit 8px; every structural value is a multiple. ------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* 1100px left most of a laptop screen empty and kept every photograph on
+     the site smaller than it deserved. Body copy is capped separately by
+     --measure, so widening this only widens the things that should be wide:
+     imagery, grids and the pinned stage. */
+  --container: 1360px;
+  --gutter: 24px;
+  /* Prose never runs the full container. 760px at 19px is about 80 characters. */
+  --measure: 760px;
+  --section-y: var(--space-24);
+  --nav-h: 56px;
+
+  /* --- Shape. Four values, nothing in between. ---------------------------- */
+  --r-none: 0;
+  --r-sm: 4px;
+  --r-md: 12px;
+  --r-pill: 9999px;
+
+  /* --- Elevation. Exactly one shadow exists, and it belongs to imagery. ---- */
+  --shadow-image: 0 4px 24px rgba(16, 11, 0, 0.1);
+
+  /* --- Motion. One curve, three durations. -------------------------------- */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 200ms; /* user-triggered: hover, focus, click */
+  --dur-mid: 600ms; /* self-triggered: text reveal, section entry */
+  --dur-slow: 900ms; /* image reveals only */
+  --stagger-step: 70ms;
+  --stagger-max: 400ms;
+}
+
+/* --- Responsive type. --t-hero and --t-section step; everything else holds. */
+@media (max-width: 1024px) {
+  :root {
+    --t-hero-size: 68px;
+    --t-section-size: 44px;
+    --t-project-size: 28px;
+    --section-y: var(--space-16);
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --t-hero-size: 42px;
+    --t-section-size: 32px;
+    --t-project-size: 24px;
+    --t-lead-size: 20px;
+    --t-body-size: 17px;
+    --section-y: var(--space-12);
+    --gutter: 20px;
+  }
+}

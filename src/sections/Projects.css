@@ -1,0 +1,154 @@
+/* --- Unpinned default: ordinary stacked blocks ---------------------------- */
+
+.projects__stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+}
+
+.projects__block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--measure);
+}
+
+.projects__number {
+  color: var(--accent);
+  font-weight: var(--w-medium);
+}
+
+.projects__meta {
+  color: var(--muted);
+}
+
+.projects__hook {
+  color: var(--fg);
+  font-weight: var(--w-medium);
+}
+
+/* Body copy is black. --muted is olive, and at these sizes a whole paragraph
+   of it reads washed out; it stays on labels and metadata. */
+.projects__para {
+  color: var(--fg);
+  font-weight: var(--w-light);
+}
+
+.projects__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin-top: var(--space-2);
+}
+
+.projects__inline-media {
+  margin-top: var(--space-6);
+}
+
+/* The rail only exists on the pinned stage. */
+.projects__rail {
+  display: none;
+}
+
+/* --- Pinned stage ----------------------------------------------------------
+   ScrollTrigger pins .projects__stage and creates the spacer that holds the
+   section's height, so nothing here declares a height in screens. The classes
+   below only describe the layout while pinned; every hidden state is set by
+   GSAP at runtime, never authored here. */
+
+@media (min-width: 900px) {
+  .projects--pinned {
+    display: block;
+    gap: 0;
+  }
+
+  .projects__stage {
+    height: 100svh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    /* The nav floats over the top of the stage. */
+    padding-top: var(--nav-h);
+  }
+
+  .projects__grid {
+    display: grid;
+    /* The photograph is the thing worth looking at on this stage, so it takes
+       the larger share. The text column is still wider in absolute terms than
+       it was at the old container width. */
+    grid-template-columns: 40fr 60fr;
+    gap: var(--space-12);
+    align-items: center;
+    width: 100%;
+  }
+
+  .projects--pinned .projects__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  /* Both columns stack every project into one cell; one is shown at a time. */
+  .projects--pinned .projects__stack,
+  .projects--pinned .projects__media {
+    display: grid;
+    gap: 0;
+  }
+
+  .projects--pinned .projects__block,
+  .projects--pinned .projects__set {
+    grid-area: 1 / 1;
+  }
+
+  .projects--pinned .projects__block {
+    max-width: none;
+  }
+
+  /* The frame the swap runs inside. Each set clips itself as it opens, so this
+     only has to hold the corner radius the frames share.
+
+     The width cap is what keeps the picture as large as the screen allows
+     without ever overflowing the pinned stage. Frames are 16:10, so a width of
+     (available height x 1.6) is exactly the widest frame that still fits
+     vertically; below that the column width wins and the photograph fills it.
+     Flush to the outer edge when the height cap bites, rather than floating in
+     the middle of its column. */
+  .projects--pinned .projects__media {
+    width: min(100%, calc((100svh - var(--nav-h) - var(--space-16)) * 1.6));
+    justify-self: end;
+    border-radius: var(--r-md);
+  }
+
+  .projects--pinned .projects__set {
+    border-radius: var(--r-md);
+    overflow: hidden;
+  }
+
+  /* --- The rail ------------------------------------------------------------
+     One segment per project. Each fills across its own screen, so the reader
+     can see how much of the section is left without counting. */
+
+  .projects--pinned .projects__rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: var(--space-2);
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .projects__rail-seg {
+    display: block;
+    height: 2px;
+    overflow: hidden;
+    background: var(--border-strong);
+    border-radius: var(--r-pill);
+  }
+
+  .projects__rail-fill {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    border-radius: var(--r-pill);
+  }
+}

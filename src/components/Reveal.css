@@ -1,0 +1,9 @@
+/* Deliberately almost empty.
+   The reveal's hidden start state is set by GSAP at runtime, never authored
+   here. An element written as `opacity: 0` in CSS is invisible to anyone whose
+   JavaScript failed; written this way it ships visible and stays visible. */
+.reveal {
+  /* GSAP animates `autoAlpha`, which drives visibility alongside opacity, so a
+     hidden reveal is also removed from the accessibility tree and cannot be
+     focused while it is off-screen. Nothing to declare. */
+}

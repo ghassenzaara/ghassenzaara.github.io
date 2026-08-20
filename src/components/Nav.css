@@ -1,0 +1,89 @@
+.skip-link {
+  position: absolute;
+  top: var(--space-2);
+  left: var(--space-2);
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  background: var(--accent);
+  color: var(--bg);
+  border-radius: var(--r-pill);
+  transform: translateY(-200%);
+  transition-property: transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--nav-h);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border-bottom: 1px solid transparent;
+  transition-property: border-color;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+/* The bottom edge appears only once the page has scrolled past 40px. */
+.nav.is-scrolled {
+  border-bottom-color: var(--border);
+}
+
+.nav__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  height: 100%;
+}
+
+.nav__mark {
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+/* The label renders at 12px, but the hit area fills the 56px bar. WCAG 2.2
+   sets the web minimum at 24px; 8px of gap keeps adjacent targets apart. */
+.nav__link {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: var(--space-3);
+  color: var(--muted);
+  border-radius: var(--r-sm);
+  transition-property: color;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.nav__link:hover,
+.nav__link[aria-current='true'] {
+  color: var(--accent);
+}
+
+/* Five 12px mono labels plus their hit areas need about 440px. Below that they
+   would either crowd the wordmark or force a horizontal scroll, so all but
+   Contact step aside.
+   Not a hamburger: this is one scrolling page, every section is reachable by
+   scrolling, and a disclosure menu would add a focus trap and an expanded state
+   to maintain for navigation the page does not actually need. Contact is the
+   one link that is an action rather than a shortcut, so it stays. */
+@media (max-width: 720px) {
+  .nav__links > li:not(:last-child) {
+    display: none;
+  }
+}

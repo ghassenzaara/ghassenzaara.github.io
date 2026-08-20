@@ -1,0 +1,130 @@
+/* =============================================================================
+   FONTS — all self-hosted. Never a CDN: render-blocking, and a GDPR problem in
+   Germany. See CONTEXT.md section 8.
+
+   Two families, in one deliberate arrangement:
+
+     PolySans  set on everything it can set.
+     Switzer   picks up every character PolySans does not have.
+
+   PolySans Trial's cmap holds 67 glyphs — space, comma, full stop through
+   colon, A-Z and a-z. No hyphen, apostrophe, parentheses, question mark or
+   middle dot, all of which this copy uses constantly.
+
+   Rather than let the browser discover that one glyph at a time, each PolySans
+   face declares a `unicode-range` covering exactly what it contains. Anything
+   outside that range is never even requested from PolySans and goes straight
+   to Switzer. The handover is per-character, deterministic and costs no extra
+   download.
+
+   The range is generated from the font binaries by scripts/build-polysans.mjs,
+   never hand-written. Dropping in full licensed PolySans weights and re-running
+   that script widens the range automatically, and Switzer quietly stops being
+   used for anything.
+   ============================================================================= */
+
+/* Geist Mono backs the mono role for the characters PolySans Mono lacks. */
+@import '@fontsource-variable/geist-mono/wght.css';
+@import './font-fallbacks.css';
+
+/* --- PolySans ------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'PolySans';
+  src: url('/fonts/polysans/polysans-300.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+002C, U+002E-U+003A, U+0041-U+005A, U+0061-U+007A;
+}
+
+@font-face {
+  font-family: 'PolySans';
+  src: url('/fonts/polysans/polysans-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+002C, U+002E-U+003A, U+0041-U+005A, U+0061-U+007A;
+}
+
+@font-face {
+  font-family: 'PolySans';
+  src: url('/fonts/polysans/polysans-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+002C, U+002E-U+003A, U+0041-U+005A, U+0061-U+007A;
+}
+
+@font-face {
+  font-family: 'PolySans';
+  src: url('/fonts/polysans/polysans-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+002C, U+002E-U+003A, U+0041-U+005A, U+0061-U+007A;
+}
+
+/* The mono cut, for labels, tags and numbering. */
+@font-face {
+  font-family: 'PolySans Mono';
+  src: url('/fonts/polysans/polysans-mono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+002C, U+002E-U+003A, U+0041-U+005A, U+0061-U+007A;
+}
+
+@font-face {
+  font-family: 'PolySans Mono';
+  src: url('/fonts/polysans/polysans-mono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0020, U+002C, U+002E-U+003A, U+0041-U+005A, U+0061-U+007A;
+}
+
+/* --- Switzer --------------------------------------------------------------
+   Free for commercial use (Indian Type Foundry, via Fontshare) and downloaded
+   into the repo rather than linked, so nothing leaves the visitor's browser.
+   No unicode-range: this is the family that has to cover everything. */
+
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer/switzer-300.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer/switzer-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer/switzer-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer/switzer-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Switzer';
+  src: url('/fonts/switzer/switzer-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

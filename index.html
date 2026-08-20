@@ -1,1 +1,110 @@
-<h1>hi</h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#eff7ff" />
+
+    <title>Ghassen Zaara — AI systems, built under constraint</title>
+    <meta
+      name="description"
+      content="Informatik student at TU Darmstadt. I build AI systems under real constraints: on-premise because the data cannot leave the building, 48 hours because that is the hackathon."
+    />
+    <link rel="canonical" href="https://ghassenzaara.github.io/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ghassenzaara.github.io/" />
+    <meta property="og:title" content="Ghassen Zaara — AI systems, built under constraint" />
+    <meta
+      property="og:description"
+      content="Informatik student at TU Darmstadt. Five shipped projects in under a year, a first place and a second place, and two modules taught in one semester."
+    />
+    <meta property="og:image" content="https://ghassenzaara.github.io/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Ghassen Zaara — AI systems, built under constraint" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ghassen Zaara — AI systems, built under constraint" />
+    <meta
+      name="twitter:description"
+      content="Informatik student at TU Darmstadt. Five shipped projects in under a year, a first place and a second place, and two modules taught in one semester."
+    />
+    <meta name="twitter:image" content="https://ghassenzaara.github.io/og.png" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Ghassen Zaara",
+        "url": "https://ghassenzaara.github.io/",
+        "email": "mailto:zaaraghassen@gmail.com",
+        "jobTitle": "B.Sc. Informatik student",
+        "affiliation": {
+          "@type": "CollegeOrUniversity",
+          "name": "Technische Universität Darmstadt"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Darmstadt",
+          "addressCountry": "DE"
+        },
+        "sameAs": [
+          "https://github.com/ghassenzaara",
+          "https://www.linkedin.com/in/ghassen-zaara"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <!--
+      Holds the hero back until the preloader clears.
+
+      The page is prerendered, so the hero is already in the HTML in its final
+      state. Arming from React instead would paint the finished hero, hide it
+      at hydration and animate it back in — a visible flash.
+
+      Scroll reveals need no equivalent: GSAP sets their hidden state at
+      runtime, so nothing below the fold is ever authored as hidden and a
+      failed bundle simply leaves the whole page visible.
+
+      The timeout is a failsafe. If the bundle 404s or fails to parse, React
+      never releases this class and the hero would stay hidden forever.
+    -->
+    <script>
+      ;(function () {
+        var root = document.documentElement
+        root.classList.add('is-loading')
+        setTimeout(function () {
+          if (root.dataset.booted) return
+          root.classList.remove('is-loading')
+          var stuck = document.getElementById('preloader')
+          if (stuck) stuck.remove()
+          document.body.style.overflow = ''
+        }, 3000)
+      })()
+    </script>
+
+    <!--
+      The preloader covers content that already exists; it does not gate it. The
+      hero is fully rendered in the prerendered HTML behind this panel.
+
+      It is `display: none` in CSS and only made visible by initPreloader, so a
+      JavaScript failure means no loader rather than a permanently blocked page.
+      It also runs on first visit only — a loader a returning visitor sits
+      through twice is a tax, not an effect.
+    -->
+    <div id="preloader">
+      <span class="preloader__mark">Ghassen Zaara&#174;</span>
+      <span id="preloader-count">000</span>
+      <span id="preloader-bar"></span>
+    </div>
+
+    <div id="root"><!--app-html--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,309 @@
+.oos {
+  overflow: clip;
+}
+
+.oos__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  max-width: 620px;
+  margin-bottom: var(--space-8);
+}
+
+.oos__line {
+  color: var(--fg);
+  font-weight: var(--w-light);
+}
+
+.oos__hint {
+  margin-bottom: var(--space-4);
+}
+
+/* --- The table of piles ----------------------------------------------------
+   Three albums side by side, sitting on a shared bottom line like prints laid
+   out on a table. Every state below is a layout change and nothing more —
+   Flip reads the difference and animates it. See OutOfScope.tsx. */
+
+.albums {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: var(--space-16) var(--space-12);
+  /* Same maths as .container, so the piles line up with every other section
+     rather than sitting a gutter's width narrower than all of them. */
+  max-width: calc(var(--container) + var(--gutter) * 2);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-block: var(--space-4) var(--space-12);
+}
+
+.album {
+  /* The one number the whole component is sized from. Every state re-declares
+     it and nothing else changes. */
+  --pile-h: 380px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  transition-property: opacity;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+/* Shut, the label sits under its pile. Open, it becomes the strip's header. */
+.album__cards {
+  order: 1;
+}
+
+.album__meta {
+  order: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.album__trigger {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-4);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--fg);
+  text-align: left;
+  cursor: pointer;
+}
+
+.album__name {
+  font-weight: var(--w-medium);
+}
+
+.album__count {
+  color: var(--accent);
+  white-space: nowrap;
+  transition-property: transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.album__trigger:hover .album__count,
+.album__trigger:focus-visible .album__count {
+  transform: translateX(4px);
+}
+
+.album__note {
+  color: var(--muted);
+  font-weight: var(--w-light);
+  max-width: 34ch;
+}
+
+/* --- The pile ---------------------------------------------------------------
+   Every card sits in the same grid cell, bottom-aligned, fanned by a rotation.
+   Grid stacking rather than absolute positioning is deliberate: it keeps every
+   card in flow, so GSAP and Flip both find the element where the stylesheet
+   says it is. */
+
+.album__cards {
+  display: grid;
+  place-items: end center;
+  height: var(--pile-h);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  cursor: pointer;
+}
+
+.album__card {
+  --rot: 0deg;
+  --shift: 0px;
+  grid-area: 1 / 1;
+  /* The cover is the top of the pile; each card behind it sits one lower. */
+  z-index: calc(9 - var(--i));
+  transform: translateX(var(--shift)) rotate(var(--rot));
+  transform-origin: 50% 100%;
+  transition-property: transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.album__card:nth-child(2) {
+  --rot: -6deg;
+  --shift: -16px;
+}
+
+.album__card:nth-child(3) {
+  --rot: 7deg;
+  --shift: 18px;
+}
+
+.album__card:nth-child(4) {
+  --rot: -11deg;
+  --shift: -30px;
+}
+
+/* Hovering opens the fan a little wider. It is the only thing that says the
+   pile has more than one photograph in it before you touch it. */
+.albums:not([data-open]) .album:hover .album__card,
+.albums:not([data-open]) .album:focus-within .album__card {
+  transform: translateX(calc(var(--shift) * 1.6)) rotate(calc(var(--rot) * 1.5));
+}
+
+/* While Flip is flying the frames, this transition would be easing the card
+   underneath them at a different rate. Held off for the duration. */
+.oos[data-flipping] .album__card,
+.oos[data-flipping] .album {
+  transition: none;
+}
+
+.album__fig {
+  position: relative;
+  margin: 0;
+}
+
+.album__clip {
+  height: var(--pile-h);
+  /* --ar is the photograph's own proportions, set per card in the markup.
+     Opening an album is partly the crop coming off. */
+  aspect-ratio: var(--ar);
+  overflow: hidden;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-image);
+}
+
+/* In a pile every frame is the same print, whichever way the photograph was
+   shot. A stack of mismatched rectangles is a mess, and a landscape frame at
+   pile height would be wider than the column it sits in. */
+.album:not([data-state='open']) .album__clip {
+  aspect-ratio: 4 / 5;
+}
+
+.album__img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.album__caption {
+  margin-top: var(--space-3);
+  color: var(--muted);
+}
+
+/* Shut, a caption is noise stacked behind three other captions. It is taken
+   out of flow rather than hidden, so it cannot push the frames around. */
+.album:not([data-state='open']) .album__caption {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  opacity: 0;
+}
+
+/* A pile shows three layers. Anything deeper waits behind the cover. */
+.album:not([data-state='open']) .album__card:nth-child(n + 4) .album__clip {
+  opacity: 0;
+}
+
+/* --- Open ------------------------------------------------------------------
+   The chosen album drops to its own row across the full grid and its pile
+   becomes a strip. The strip scrolls natively: overflow-x with scroll-snap and
+   nothing else. Native scroll gets trackpad, shift+wheel, touch swipe,
+   keyboard and the scrollbar for free. */
+
+.albums[data-open] .album[data-state='open'] {
+  --pile-h: 58vh;
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
+.album[data-state='open'] .album__meta {
+  order: 1;
+}
+
+.album[data-state='open'] .album__cards {
+  order: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+  height: auto;
+  cursor: default;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-left: var(--gutter);
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  /* Full bleed, so the last frame is visibly cut off at the right edge —
+     nobody scrolls a strip that looks complete. */
+  margin-inline: calc(50% - 50vw);
+  padding-inline: max(var(--gutter), calc(50vw - var(--container) / 2));
+  padding-block: var(--space-2) var(--space-6);
+}
+
+.album[data-state='open'] .album__cards::-webkit-scrollbar {
+  display: none;
+}
+
+.album[data-state='open'] .album__card {
+  flex: 0 0 auto;
+  z-index: auto;
+  transform: none;
+  scroll-snap-align: start;
+}
+
+/* --- Aside -----------------------------------------------------------------
+   The albums you did not open. They keep their names and shrink to a thumb,
+   so switching between albums is one click rather than a close and an open. */
+
+.album[data-state='aside'] {
+  --pile-h: 104px;
+  opacity: 0.55;
+}
+
+.album[data-state='aside']:hover,
+.album[data-state='aside']:focus-within {
+  opacity: 1;
+}
+
+.album[data-state='aside'] .album__note {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .albums {
+    grid-template-columns: 1fr;
+    gap: var(--space-12);
+  }
+
+  .album {
+    --pile-h: 260px;
+  }
+
+  /* One column: an album expands where it already is, rather than jumping
+     below the two it would have to step over. */
+  .albums[data-open] .album[data-state='open'] {
+    --pile-h: 46vh;
+    grid-row: auto;
+  }
+
+  .album[data-state='aside'] {
+    --pile-h: 88px;
+  }
+}
+
+@media (max-width: 640px) {
+  .album {
+    --pile-h: 220px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .album,
+  .album__card,
+  .album__count {
+    transition: none;
+  }
+
+  .albums:not([data-open]) .album:hover .album__card,
+  .albums:not([data-open]) .album:focus-within .album__card {
+    transform: translateX(var(--shift)) rotate(var(--rot));
+  }
+}

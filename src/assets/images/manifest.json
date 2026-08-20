@@ -1,0 +1,90 @@
+{
+  "header-bg": {
+    "width": 2560,
+    "height": 1440
+  },
+  "bp-1": {
+    "width": 1600,
+    "height": 1000
+  },
+  "bp-2": {
+    "width": 1600,
+    "height": 1000
+  },
+  "bp-3": {
+    "width": 1435,
+    "height": 897
+  },
+  "sanfo-app": {
+    "width": 1600,
+    "height": 1000
+  },
+  "ariva-presenting": {
+    "width": 1600,
+    "height": 1000
+  },
+  "viegtor-slide": {
+    "width": 1600,
+    "height": 900
+  },
+  "viegtor-team": {
+    "width": 1600,
+    "height": 1000
+  },
+  "sanfo-desk": {
+    "width": 1600,
+    "height": 1000
+  },
+  "ro-tutor": {
+    "width": 1280,
+    "height": 1707
+  },
+  "aud-blackboard": {
+    "width": 1600,
+    "height": 2133
+  },
+  "tumai-presenting": {
+    "width": 1200,
+    "height": 900
+  },
+  "gal-01": {
+    "width": 750,
+    "height": 1000
+  },
+  "gal-02": {
+    "width": 750,
+    "height": 1000
+  },
+  "gal-03": {
+    "width": 571,
+    "height": 1000
+  },
+  "gal-04": {
+    "width": 750,
+    "height": 1000
+  },
+  "gal-05": {
+    "width": 1764,
+    "height": 1000
+  },
+  "gal-06": {
+    "width": 750,
+    "height": 1000
+  },
+  "gal-07": {
+    "width": 1778,
+    "height": 1000
+  },
+  "gal-08": {
+    "width": 562,
+    "height": 1000
+  },
+  "gal-09": {
+    "width": 750,
+    "height": 1000
+  },
+  "gal-10": {
+    "width": 1778,
+    "height": 1000
+  }
+}

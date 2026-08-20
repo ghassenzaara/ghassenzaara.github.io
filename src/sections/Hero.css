@@ -1,0 +1,251 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: var(--nav-h);
+  /* The preloader scales the children (not this element) from 1.04 to 1 as the
+     panel lifts, so the two movements resolve together. See Preloader.css. */
+}
+
+/* --- Background photograph ------------------------------------------------- */
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  /* The ground the photograph wipes onto. Without it the frame is page-white
+     for as long as the download takes, and the reveal reads as a flash rather
+     than as a picture arriving. */
+  background: var(--surface);
+}
+
+.hero__bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Far more of the photograph than before. The scrim below is what keeps the
+     type readable, so the picture itself no longer has to be faded to nothing
+     — it now reads as a photograph rather than as a texture. */
+  opacity: 0.72;
+}
+
+/* A wash of the page colour over the photograph, so the type sits on an even
+   ground instead of on whatever happens to be behind each letter. Not a
+   gradient — a flat scrim. */
+.hero__bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  /* 30% was tuned for the old header photograph. The alps frame carries far
+     more mid-tone — rock, treeline, shadowed slope — straight through the
+     middle of the screen, which is exactly where the name sits, so the wash is
+     heavier. This is the number to move if the type needs more room; the
+     photograph's own opacity below is the second lever. */
+  background: color-mix(in srgb, var(--bg) 48%, transparent);
+}
+
+/* --- Content --------------------------------------------------------------- */
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero__eyebrow {
+  color: var(--fg);
+  font-weight: var(--w-medium);
+  margin-bottom: var(--space-6);
+}
+
+.hero__headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+/* The name carries the weight and the display size; the sentence under it is
+   smaller and light. That contrast is doing the work a second typeface would
+   otherwise do, and it is what lets the whole hero fit one screen. */
+.hero__name {
+  display: block;
+  font-weight: var(--w-bold);
+}
+
+.hero__tagline {
+  display: block;
+  font-weight: var(--w-light);
+  max-inline-size: 24ch;
+}
+
+.hero__line {
+  display: block;
+  overflow: hidden;
+}
+
+.hero__line-inner {
+  display: block;
+}
+
+.hero__subline {
+  color: var(--fg);
+  font-weight: var(--w-light);
+  max-width: 760px;
+  margin-bottom: var(--space-6);
+}
+
+.hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-12);
+}
+
+.hero__links .text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: var(--w-medium);
+}
+
+/* --- Scroll indicator ------------------------------------------------------ */
+
+.hero__scroll {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: var(--space-8);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--muted);
+}
+
+.hero__scroll-line {
+  display: block;
+  width: 1px;
+  height: 48px;
+  background: var(--border-strong);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero__scroll-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: hero-scroll-wipe 2.4s var(--ease) infinite;
+}
+
+@keyframes hero-scroll-wipe {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* --- Load animation --------------------------------------------------------
+   Base state is the final state. `is-loading` is applied by the inline script
+   before first paint and released once the preloader clears, so a script
+   failure leaves the hero fully visible rather than blank. */
+
+.is-loading .hero__line-inner {
+  transform: translateY(100%);
+}
+
+.is-loading .hero__eyebrow,
+.is-loading .hero__subline,
+.is-loading .hero__links,
+.is-loading .hero__scroll,
+.is-loading .hero__bg {
+  opacity: 0;
+}
+
+.hero__line-inner {
+  transform: translateY(0);
+  transition-property: transform;
+  transition-duration: var(--dur-mid);
+  transition-timing-function: var(--ease);
+  transition-delay: calc(var(--i) * 80ms);
+}
+
+.hero__eyebrow,
+.hero__subline,
+.hero__links,
+.hero__scroll,
+.hero__bg {
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: var(--dur-mid);
+  transition-timing-function: var(--ease);
+}
+
+.hero__subline,
+.hero__links,
+.hero__scroll {
+  transition-delay: 200ms;
+}
+
+@media (max-width: 640px) {
+  .hero__tagline {
+    max-inline-size: 20ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__scroll-line::after {
+    animation: none;
+  }
+
+  .is-loading .hero__line-inner,
+  .is-loading .hero__eyebrow,
+  .is-loading .hero__subline,
+  .is-loading .hero__links,
+  .is-loading .hero__scroll,
+  .is-loading .hero__bg,
+  .hero__line-inner,
+  .hero__eyebrow,
+  .hero__subline,
+  .hero__links,
+  .hero__scroll,
+  .hero__bg {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+
+  .hero__bg-img {
+    opacity: 0.72;
+  }
+
+  .hero__scroll {
+    transform: translateX(-50%);
+  }
+}

@@ -1,0 +1,35 @@
+.figure {
+  margin: 0;
+}
+
+/* The shadow lives on the frame, not the clip. clipPath would clip the
+   element's own shadow, and that shadow is the one that exists. */
+.figure__frame {
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-image);
+}
+
+.figure__clip {
+  overflow: hidden;
+  border-radius: var(--r-md);
+}
+
+/* The scrubbed zoom's own element. It exists so the entrance can own the
+   image's scale and the drift can own this one, rather than the two of them
+   overwriting each other on the same property. */
+.figure__zoom {
+  transform-origin: 50% 50%;
+}
+
+.figure__img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.figure__caption {
+  margin-top: var(--space-3);
+}
+
+/* No hidden start state here on purpose — GSAP sets it at runtime, so the
+   figure is visible if the bundle never arrives. See Figure.tsx. */

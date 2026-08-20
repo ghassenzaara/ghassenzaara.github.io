@@ -1,0 +1,66 @@
+/* `cursor: none` comes from a class JavaScript adds only after both cursor
+   elements exist. It is never set unconditionally in CSS. */
+.has-custom-cursor,
+.has-custom-cursor a,
+.has-custom-cursor button,
+.has-custom-cursor [role='button'] {
+  cursor: none;
+}
+
+/* Outer element: positioned by gsap.quickTo, nothing else. */
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+  z-index: 9999;
+  /* GSAP owns opacity via autoAlpha; nothing is declared hidden here. */
+}
+
+/* Inner element: sized once, then only ever scaled. */
+.cursor-dot__inner,
+.cursor-ring__inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: var(--r-pill);
+  will-change: transform;
+  /* Scale and opacity are GSAP's. Only the colour swap stays on CSS, because a
+     two-state colour change is exactly what a CSS transition is good at. */
+  transition-property: background-color, border-color;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.cursor-dot__inner {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--accent);
+}
+
+.cursor-ring__inner {
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  border: 1px solid var(--accent);
+}
+
+.is-inverse .cursor-dot__inner {
+  background: var(--accent-light);
+}
+
+.is-inverse .cursor-ring__inner {
+  border-color: var(--accent-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}

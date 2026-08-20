@@ -1,0 +1,81 @@
+/* Pill means "this is an action". Nothing that is not clickable gets one. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--r-pill);
+  font-family: var(--font-body);
+  font-size: var(--t-body-size);
+  font-weight: var(--w-regular);
+  line-height: var(--t-body-lh);
+  letter-spacing: var(--t-body-track);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition-property: background-color, border-color, color, transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button--primary {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.button--primary:hover {
+  background: var(--fg);
+}
+
+.button--ghost {
+  background: transparent;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.button--ghost:hover {
+  background: var(--surface);
+  border-color: var(--fg);
+  color: var(--fg);
+}
+
+/* The arrow travels; the label stays put. */
+.button__arrow {
+  display: inline-block;
+  transition-property: transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.button:hover .button__arrow {
+  transform: translateX(4px);
+}
+
+/* On the inverted band --accent is 2.2:1 and unreadable, so it is remapped to
+   --accent-light for everything inside. The button only has to invert its text
+   colour to match the new fill. */
+.contact-band .button--primary {
+  color: var(--surface-inverse);
+}
+
+.contact-band .button--primary:hover {
+  background: var(--bg);
+}
+
+.contact-band .button--ghost:hover {
+  background: transparent;
+  border-color: var(--bg);
+  color: var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button,
+  .button__arrow {
+    transition: none;
+  }
+}

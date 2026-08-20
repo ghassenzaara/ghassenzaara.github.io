@@ -1,0 +1,29 @@
+.community {
+  display: grid;
+  /* The figure comes first in the DOM and takes the wider track. The body is
+     capped at --measure anyway, so the second track only ever needs to reach
+     that, and everything past it belongs to the photograph. */
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  align-items: center;
+}
+
+.community__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+  max-width: var(--measure);
+}
+
+.community__para {
+  color: var(--fg);
+  font-weight: var(--w-light);
+}
+
+@media (max-width: 900px) {
+  .community {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+  }
+}

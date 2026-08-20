@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Ghassen Zaara">
+  <!-- Palette tokens, inlined: a favicon cannot read CSS custom properties.
+       #22577a is the accent (Baltic Blue), #eff7ff is the page background (Alice Blue). -->
+  <rect width="64" height="64" rx="14" fill="#22577a"/>
+  <!-- An abstract G: an open arc closed by a bar. Pure geometry, so it stays
+       legible at 16px and does not depend on a webfont being available. -->
+  <path d="M44 22a15 15 0 1 0 0 20"
+        fill="none" stroke="#eff7ff" stroke-width="6" stroke-linecap="round"/>
+  <path d="M44 32h-9" fill="none" stroke="#eff7ff" stroke-width="6" stroke-linecap="round"/>
+</svg>

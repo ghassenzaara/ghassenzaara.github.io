@@ -1,0 +1,48 @@
+.hackathons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-16);
+  align-items: start;
+}
+
+.hackathons__item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Both frames are the same height so the two write-ups underneath start on the
+   same line. Raised with the container: the columns are 130px wider than they
+   were, and a frame that stayed at 460px would have gone conspicuously wide
+   and flat. */
+.hackathons__item .figure__clip {
+  max-height: 560px;
+}
+
+.hackathons__item .figure__img {
+  height: 560px;
+  object-fit: cover;
+}
+
+.hackathons__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.hackathons__place {
+  color: var(--accent);
+  font-weight: var(--w-semi);
+}
+
+.hackathons__para {
+  color: var(--fg);
+  font-weight: var(--w-light);
+}
+
+@media (max-width: 833px) {
+  .hackathons {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-12);
+  }
+}

@@ -1,0 +1,21 @@
+.tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.tech-tag {
+  padding: var(--space-1) 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  color: var(--muted);
+  background: transparent;
+  /* Tags wrap rather than clipping. A tag that loses its label to an overflow
+     rule has stopped being a tag. */
+  white-space: nowrap;
+}
+
+/* Inside the inverted band --muted and --border are both derived from --fg and
+   go invisible. The band remaps them in ContactBand.css, so the tag needs no
+   override of its own. */

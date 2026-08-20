@@ -1,0 +1,98 @@
+.contact-band {
+  /* --accent is 2.2:1 on this surface. Remapping it once here means any
+     component reaching for --accent is automatically correct inside the band,
+     instead of every call site having to remember. --muted and --border are
+     both derived from --fg and would vanish, so they are remapped too. */
+  --accent: var(--accent-light);
+  --fg: var(--bg);
+  --muted: var(--accent-light);
+  --surface: color-mix(in srgb, var(--bg) 12%, transparent);
+  --border: color-mix(in srgb, var(--bg) 24%, transparent);
+  --border-strong: color-mix(in srgb, var(--bg) 40%, transparent);
+  --focus: var(--bg);
+
+  display: block;
+  background: var(--surface-inverse);
+  color: var(--bg);
+  border-radius: var(--r-none);
+  padding-block: var(--space-24);
+  scroll-margin-top: calc(var(--nav-h) + var(--space-4));
+}
+
+.contact-band__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-6);
+}
+
+.contact-band__eyebrow {
+  color: var(--accent-light);
+}
+
+.contact-band__title {
+  color: var(--bg);
+}
+
+.contact-band__line {
+  color: var(--bg);
+  max-width: var(--measure);
+}
+
+.contact-band__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin: 0;
+}
+
+.contact-band__links--social {
+  margin-top: calc(var(--space-2) * -1);
+}
+
+.contact-band__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-8);
+  width: 100%;
+  margin-top: var(--space-16);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--border);
+}
+
+.contact-band__colophon {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  color: var(--accent-light);
+}
+
+.contact-band__colophon-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* A fixed column so the four notes line up under each other. */
+.contact-band__swatch-name {
+  min-width: 11ch;
+}
+
+.contact-band__swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.contact-band__legal {
+  color: var(--accent-light);
+}
+
+/* Under reduced motion GSAP never builds the arrival, so the band is simply
+   its final colour from the start. Nothing to declare. */

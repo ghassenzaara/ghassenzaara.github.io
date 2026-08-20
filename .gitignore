@@ -1,1 +1,7 @@
+node_modules
+dist
+.vite
+portfolio-images/
 .idea
+.DS_Store
+*.local

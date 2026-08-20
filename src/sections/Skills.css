@@ -1,0 +1,197 @@
+/* Three across, two rows, six groups, and every group only as tall as its own
+   text.
+
+   This block used to break out of the container to get the measure it needs.
+   It no longer has to: --container is 1360px now, so it simply sits in it and
+   lines up with every other section, which one section sticking out by 40px
+   never did. The six groups carry roughly the same amount of text as each
+   other, so equal thirds are the right tracks; nothing has to be widened to
+   stop one list setting the height of its whole row. */
+.skills {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-12) var(--space-16);
+}
+
+.skills__group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* The only muted line in the block, which is what makes the five labels
+   readable on their own at a glance. */
+.skills__label {
+  color: var(--muted);
+  font-weight: var(--w-regular);
+}
+
+.skills__list {
+  /* Inline flow, not a column. The list semantics stay; the layout does not.
+     Deliberately no text-wrap: pretty here — plain greedy wrapping fills each
+     line to the end, which is what keeps the group short. */
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--fg);
+  font-weight: var(--w-light);
+}
+
+.skills__item {
+  display: inline;
+}
+
+.skills__sep {
+  color: var(--muted);
+}
+
+/* Tablet: two equal across, back inside the container. */
+@media (max-width: 1023px) {
+  .skills {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-8) var(--space-12);
+  }
+}
+
+/* Mobile: one column. Everything visible at once — deliberately not an
+   accordion. */
+@media (max-width: 640px) {
+  .skills {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+/* --- The two downloads -----------------------------------------------------
+   They close the toolkit, because a reader who has just finished a list of
+   what I work with is the reader most likely to want the document version.
+
+   Everything that moves here is transform and opacity on a compositor layer,
+   at the 200ms user-triggered duration. Nothing animates on load beyond the
+   clip-path wipe GSAP runs once on the way past. See Skills.tsx. */
+
+.skills__downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-24);
+}
+
+.dl {
+  /* isolate, so the fill below can sit at z-index -1 and stay behind the label
+     without escaping into the page's stacking context. */
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  overflow: hidden;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--r-sm);
+  background: var(--surface-inverse);
+  color: var(--bg);
+  transition-property: transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.dl:active {
+  transform: scale(0.98);
+}
+
+/* Baltic Blue, wiped up from the bottom edge. --bg on --accent is 7.2:1, so
+   the label stays readable the whole way across the swap. */
+.dl__fill {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  transition-property: transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.dl:hover .dl__fill,
+.dl:focus-visible .dl__fill {
+  transform: scaleY(1);
+}
+
+/* --- The label swap --------------------------------------------------------
+   A one-line window over a two-line stack. Hover slides the stack up by
+   exactly half its height, so the second copy lands where the first one was.
+   The window is sized from the type tokens rather than from `1lh`, so the two
+   halves can never disagree about what one line is. */
+
+.dl__swap {
+  display: block;
+  overflow: hidden;
+}
+
+.dl__swap--label {
+  height: calc(var(--t-body-size) * var(--t-body-lh));
+}
+
+.dl__swap--arrow {
+  height: 12px;
+}
+
+.dl__lines {
+  display: block;
+  transition-property: transform;
+  transition-duration: var(--dur-fast);
+  transition-timing-function: var(--ease);
+}
+
+.dl:hover .dl__lines,
+.dl:focus-visible .dl__lines {
+  transform: translateY(-50%);
+}
+
+.dl__line {
+  display: block;
+  white-space: nowrap;
+}
+
+.dl__note {
+  /* Lighter than the label it qualifies, and it does not move: the swap reads
+     as one word replacing itself, not as the whole button sliding. */
+  color: var(--accent-light);
+}
+
+.dl__arrow {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+
+@media (max-width: 640px) {
+  .skills__downloads {
+    /* Full width and stacked. Two of these side by side on a phone leaves each
+       one too narrow for its own label. */
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: var(--space-16);
+  }
+
+  .dl {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl,
+  .dl__fill,
+  .dl__lines {
+    transition: none;
+  }
+
+  /* No swap, so the fill still has to do the work on its own. */
+  .dl:hover .dl__lines,
+  .dl:focus-visible .dl__lines {
+    transform: none;
+  }
+}

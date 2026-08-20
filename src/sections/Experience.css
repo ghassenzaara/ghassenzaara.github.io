@@ -1,0 +1,83 @@
+.experience {
+  display: flex;
+  flex-direction: column;
+}
+
+.experience__item {
+  display: grid;
+  /* The media column is the wider of the two now. The body is capped at
+     --measure regardless, so the width it gives up costs the text nothing.
+     The figure comes first in the DOM, so the wide track is the first one —
+     and swaps below on the rows where the figure moves across. */
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: var(--space-12);
+  align-items: center;
+  padding-block: var(--space-16);
+  border-top: 1px solid var(--border);
+}
+
+.experience__item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+/* Alternating sides. The wide track has to move with the figure, otherwise
+   every second photograph lands in the narrow column. */
+.experience__item:nth-child(even) {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+}
+
+.experience__item:nth-child(even) .experience__media {
+  order: 2;
+}
+
+/* Both tutoring photographs are shown whole rather than cropped to a shared
+   box: ro-tutor is a standing figure where the outfit matters as much as the
+   board, and aud-blackboard has to keep both boards in frame. A common
+   max-height would have flattened both. */
+.experience__media .figure__clip {
+  max-height: 760px;
+}
+
+.experience__media .figure__img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.experience__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: var(--measure);
+}
+
+.experience__meta {
+  color: var(--muted);
+}
+
+.experience__para {
+  color: var(--fg);
+  font-weight: var(--w-light);
+}
+
+/* The one fact worth stating on its own. */
+.experience__note {
+  margin-top: var(--space-12);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .experience__item,
+  .experience__item:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    padding-block: var(--space-12);
+  }
+
+  .experience__item:nth-child(even) .experience__media {
+    order: 0;
+  }
+}

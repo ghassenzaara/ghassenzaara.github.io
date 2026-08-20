@@ -1,0 +1,87 @@
+/* Hidden by default. initPreloader is what makes it visible, so a JavaScript
+   failure means no loader rather than a coffee-coloured panel stuck over the
+   page forever. */
+#preloader {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--surface-inverse);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-8);
+  transition-property: transform;
+  /* The spec asked for 500ms. Only three durations exist (CONTEXT.md section
+     9), so this is 600ms and LIFT in preloader.ts matches it — a JS timeout
+     shorter than the CSS transition would yank the panel mid-lift. */
+  transition-duration: var(--dur-mid);
+  transition-timing-function: var(--ease);
+  will-change: transform;
+}
+
+.preloader__mark {
+  font-family: var(--font-display);
+  font-size: var(--t-project-size);
+  font-weight: var(--w-medium);
+  line-height: var(--t-project-lh);
+  letter-spacing: var(--t-project-track);
+  color: var(--bg);
+}
+
+#preloader-count {
+  align-self: flex-end;
+  font-family: var(--font-mono);
+  font-size: clamp(48px, 12vw, 96px);
+  font-weight: var(--w-regular);
+  line-height: 1;
+  color: var(--accent-light);
+  /* Without this the counter's width shifts on every digit change and the
+     whole thing looks amateur. */
+  font-variant-numeric: tabular-nums;
+}
+
+#preloader-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--accent-light);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* The hero sits underneath already rendered, scaled up a touch, and settles as
+   the panel clears.
+
+   The scale goes on the hero's children, not on .hero itself. Scaling the
+   section scales its box too: at 1.04 it is 4% wider than the viewport, which
+   pushes the document sideways and flashes a horizontal scrollbar. The
+   children are inside .hero's own `overflow: hidden`, so scaling them is
+   clipped and costs nothing. */
+.hero__bg,
+.hero__inner {
+  transform: scale(1.04);
+  transition-property: transform, opacity;
+  transition-duration: var(--dur-slow);
+  transition-timing-function: var(--ease);
+}
+
+.is-revealing .hero__bg,
+.is-revealing .hero__inner {
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #preloader {
+    display: none;
+  }
+
+  .hero__bg,
+  .hero__inner,
+  .is-revealing .hero__bg,
+  .is-revealing .hero__inner {
+    transform: none;
+    transition: none;
+  }
+}
