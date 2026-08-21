@@ -5,7 +5,7 @@ import type { Project, Slide } from '../content/projects'
 import './ProjectCarousel.css'
 
 /**
- * One project's image set: 2 or 3 slides, driven by dots below the frame.
+ * One project's image set: two to four slides, driven by the arrows on the frame.
  *
  * Autoplay is deliberately off — the reader drives it. Slides move
  * horizontally rather than cross-fading in place, because the lateral movement

@@ -12,10 +12,34 @@
     "height": 1000
   },
   "bp-3": {
-    "width": 1435,
-    "height": 897
+    "width": 1600,
+    "height": 1000
+  },
+  "ariva-1": {
+    "width": 1600,
+    "height": 1000
+  },
+  "ariva-2": {
+    "width": 1600,
+    "height": 1000
+  },
+  "ariva-3": {
+    "width": 1600,
+    "height": 1000
+  },
+  "viegtor-app-1": {
+    "width": 1600,
+    "height": 1000
+  },
+  "viegtor-app-2": {
+    "width": 1600,
+    "height": 1000
   },
   "sanfo-app": {
+    "width": 1600,
+    "height": 1000
+  },
+  "sanfo-trust": {
     "width": 1600,
     "height": 1000
   },

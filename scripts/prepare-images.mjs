@@ -36,10 +36,24 @@ const SLOTS = [
   },
 
   // --- Project screenshots ---
-  { name: 'bp-1', src: 'UI/BrückenPilot 1.png', aspect: [16, 10], master: 1600 },
-  { name: 'bp-2', src: 'UI/BrückenPilot2.png', aspect: [16, 10], master: 1600 },
-  { name: 'bp-3', src: 'UI/BrückenPilot3.png', aspect: [16, 10], master: 1600 },
-  { name: 'sanfo-app', src: 'UI/San-Fo.png', aspect: [16, 10], master: 1600 },
+  //
+  // These are all `contain`, not `aspect`. A browser screenshot is 1.7-2.2
+  // wide and the carousel frame is 16:10, so a cover crop has to throw away a
+  // quarter of the width — and on a screenshot that width is the interface.
+  // The first pass cropped San-Fo by salience and cut the logo and the
+  // headline in half. So the whole frame is kept and matted instead, and each
+  // `mat` is the page background read off the edge of that screenshot, so the
+  // mat and the picture meet without a seam.
+  { name: 'bp-1', src: 'UI/BrückenPilot 1.png', contain: [16, 10], master: 1600, mat: { r: 249, g: 249, b: 252 } },
+  { name: 'bp-2', src: 'UI/BrückenPilot2.png', contain: [16, 10], master: 1600, mat: { r: 249, g: 249, b: 252 } },
+  { name: 'bp-3', src: 'UI/BrückenPilot3.png', contain: [16, 10], master: 1600, mat: { r: 249, g: 249, b: 252 } },
+  { name: 'ariva-1', src: 'UI/ARIVA 1.png', contain: [16, 10], master: 1600, mat: { r: 248, g: 251, b: 250 } },
+  { name: 'ariva-2', src: 'UI/ARIVA2.png', contain: [16, 10], master: 1600, mat: { r: 248, g: 251, b: 250 } },
+  { name: 'ariva-3', src: 'UI/ARIVA3.png', contain: [16, 10], master: 1600, mat: { r: 248, g: 251, b: 250 } },
+  { name: 'viegtor-app-1', src: 'UI/viegtor1.png', contain: [16, 10], master: 1600, mat: { r: 0, g: 0, b: 0 } },
+  { name: 'viegtor-app-2', src: 'UI/Viegtor 2.png', contain: [16, 10], master: 1600, mat: { r: 9, g: 9, b: 11 } },
+  { name: 'sanfo-app', src: 'UI/San-Fo.png', contain: [16, 10], master: 1600, mat: { r: 245, g: 239, b: 232 } },
+  { name: 'sanfo-trust', src: 'UI/sanfo 1.png', contain: [16, 10], master: 1600, mat: { r: 245, g: 239, b: 231 } },
 
   // --- Projects, photography ---
   { name: 'ariva-presenting', src: 'work/presenting-ariva-2.jpeg', aspect: [16, 10], master: 1600 },
@@ -145,6 +159,23 @@ for (const slot of SLOTS) {
     // Fixed height, natural width.
     const h = Math.min(slot.height, meta.height)
     pipeline = pipeline.resize({ height: h, fit: 'inside' })
+  } else if (slot.contain) {
+    // Whole frame kept, matted out to the slot ratio. Used for screenshots,
+    // where the part a crop would remove is interface rather than background.
+    //
+    // The mat colour is the slot's own `mat`, read off the page background
+    // at the edge of the frame, so the mat and the screenshot meet without a
+    // seam. Falling back to sharp's dominant colour is close but not exact:
+    // on San-Fo it picked the pink of the hero wash rather than the cream of
+    // the page, which put a visible band above and below the picture.
+    const [aw, ah] = slot.contain
+    const targetW = Math.min(slot.master, meta.width)
+    const targetH = Math.round((targetW / aw) * ah)
+    const { r, g, b } = slot.mat ?? (await pipeline.clone().stats()).dominant
+    pipeline = pipeline.resize(targetW, targetH, {
+      fit: 'contain',
+      background: { r, g, b, alpha: 1 },
+    })
   } else if (slot.aspect) {
     const [aw, ah] = slot.aspect
     const srcRatio = meta.width / meta.height

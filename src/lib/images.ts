@@ -19,13 +19,20 @@ import manifest from '../assets/images/manifest.json'
 // sharper than encoding a 1920 master would be, and the headroom is there if
 // the cap is ever raised — but 1920 is the widest variant anyone downloads.
 import headerBg from '../assets/images/header-bg.webp?w=1280;1920&format=webp&as=srcset'
+// Every project screenshot is matted to 16:10 at 1600 wide by
+// prepare-images, so they all take the same widths. bp-3 used to be the
+// exception at 1435 because a cover crop left it that narrow; matting keeps
+// the full frame, so it is 1600 like the rest.
 import bp1 from '../assets/images/bp-1.webp?w=800;1200;1600&format=webp&as=srcset'
 import bp2 from '../assets/images/bp-2.webp?w=800;1200;1600&format=webp&as=srcset'
-// 1435, not 1600: the replacement BrückenPilot3.png is only 1435px wide once
-// cropped to 16:10, and asking for a width the master does not have is how
-// you ship an upscaled screenshot. Widths follow the master, always.
-import bp3 from '../assets/images/bp-3.webp?w=800;1200;1435&format=webp&as=srcset'
+import bp3 from '../assets/images/bp-3.webp?w=800;1200;1600&format=webp&as=srcset'
+import ariva1 from '../assets/images/ariva-1.webp?w=800;1200;1600&format=webp&as=srcset'
+import ariva2 from '../assets/images/ariva-2.webp?w=800;1200;1600&format=webp&as=srcset'
+import ariva3 from '../assets/images/ariva-3.webp?w=800;1200;1600&format=webp&as=srcset'
+import viegtorApp1 from '../assets/images/viegtor-app-1.webp?w=800;1200;1600&format=webp&as=srcset'
+import viegtorApp2 from '../assets/images/viegtor-app-2.webp?w=800;1200;1600&format=webp&as=srcset'
 import sanfoApp from '../assets/images/sanfo-app.webp?w=800;1200;1600&format=webp&as=srcset'
+import sanfoTrust from '../assets/images/sanfo-trust.webp?w=800;1200;1600&format=webp&as=srcset'
 import arivaPresenting from '../assets/images/ariva-presenting.webp?w=800;1200;1600&format=webp&as=srcset'
 import viegtorSlide from '../assets/images/viegtor-slide.webp?w=800;1200;1600&format=webp&as=srcset'
 import viegtorTeam from '../assets/images/viegtor-team.webp?w=800;1200;1600&format=webp&as=srcset'
@@ -64,7 +71,13 @@ export const images = {
   bp1: source('bp-1', bp1),
   bp2: source('bp-2', bp2),
   bp3: source('bp-3', bp3),
+  ariva1: source('ariva-1', ariva1),
+  ariva2: source('ariva-2', ariva2),
+  ariva3: source('ariva-3', ariva3),
+  viegtorApp1: source('viegtor-app-1', viegtorApp1),
+  viegtorApp2: source('viegtor-app-2', viegtorApp2),
   sanfoApp: source('sanfo-app', sanfoApp),
+  sanfoTrust: source('sanfo-trust', sanfoTrust),
   arivaPresenting: source('ariva-presenting', arivaPresenting),
   viegtorSlide: source('viegtor-slide', viegtorSlide),
   viegtorTeam: source('viegtor-team', viegtorTeam),
